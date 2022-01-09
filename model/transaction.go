@@ -29,3 +29,11 @@ func (dao *DAO) GetTransactionByTxHash(txHash []byte) (*Transaction, error) {
 
 	return tx, nil
 }
+
+func (dao *DAO) CreateTransaction(tx *Transaction) (*Transaction, error) {
+	// TODO validation
+	if err := dao.DB.Create(tx).Error; err != nil {
+		return nil, err
+	}
+	return tx, nil
+}
