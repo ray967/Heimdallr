@@ -11,7 +11,6 @@ import (
 )
 
 type RepositoryService struct {
-	DB  *gorm.DB
 	DAO model.DAOAbstracter
 	// TODO cache
 }
@@ -21,8 +20,7 @@ func (svc *RepositoryService) Init() error {
 	if err != nil {
 		return err
 	}
-	svc.DB = db
-	if dao, ok := model.NewDAO(svc.DB).(*model.DAO); ok {
+	if dao, ok := model.NewDAO(db).(*model.DAO); ok {
 		svc.DAO = dao
 	}
 
