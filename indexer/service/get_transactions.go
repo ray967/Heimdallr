@@ -12,6 +12,14 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
+var transactionByHash = func(client *ethclient.Client, hash common.Hash) (tx *types.Transaction, isPending bool, err error) {
+	return client.TransactionByHash(context.Background(), hash)
+}
+
+var transactionReceipt = func(client *ethclient.Client, hash common.Hash) (*types.Receipt, error) {
+	return client.TransactionReceipt(context.Background(), hash)
+}
+
 // GetTransactions gets the transactions when it's done
 func GetTransactions(client *ethclient.Client, repo repository.RepositoryService, ch chan *types.Block) {
 	for len(ch) > 0 {
@@ -45,7 +53,7 @@ func getTransaction(client *ethclient.Client, repo repository.RepositoryService,
 	)
 
 	for isPending {
-		tx, isPending, err = client.TransactionByHash(context.Background(), hash)
+		tx, isPending, err = transactionByHash(client, hash)
 		if err != nil {
 			fmt.Println(err.Error())
 			return
@@ -72,7 +80,7 @@ func getTransaction(client *ethclient.Client, repo repository.RepositoryService,
 				Nonce:  tx.Nonce(),
 				Value:  tx.Value().Int64(),
 			}
-			recp, err := client.TransactionReceipt(context.Background(), hash)
+			recp, err := transactionReceipt(client, hash)
 			if err != nil {
 				fmt.Println(err.Error())
 				return

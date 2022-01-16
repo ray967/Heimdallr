@@ -16,10 +16,18 @@ var (
 	preHead *big.Int = nil
 )
 
+var headerByNumber = func(client *ethclient.Client) (*types.Header, error) {
+	return client.HeaderByNumber(context.Background(), nil)
+}
+
+var blockByNumber = func(client *ethclient.Client, headerNumber *big.Int) (*types.Block, error) {
+	return client.BlockByNumber(context.Background(), headerNumber)
+}
+
 // GetNewBlocks insert pending blocks into channel
 func GetNewBlocks(client *ethclient.Client, repo repository.RepositoryService, ch chan *types.Block) {
 
-	header, err := client.HeaderByNumber(context.Background(), nil)
+	header, err := headerByNumber(client)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,9 +41,9 @@ func GetNewBlocks(client *ethclient.Client, repo repository.RepositoryService, c
 	// while has new blocks
 	for preHead.Cmp(header.Number) == -1 {
 		preHead.Add(preHead, big.NewInt(1))
-		block, err := client.BlockByNumber(context.Background(), header.Number)
+		block, err := blockByNumber(client, header.Number)
 		if err != nil {
-			panic(fmt.Sprintf("BlockByNumber failed:%v\n", err))
+			fmt.Printf("ERROR: BlockByNumber failed:%v\n", err)
 		}
 		// save to db
 		repo.DAO.CreateBlock(&model.Block{
