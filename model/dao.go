@@ -18,6 +18,7 @@ var NewDAO = func(db *gorm.DB) DAOAbstracter {
 	return dao
 }
 
+// DAOAbstracter represents the DAO interface
 type DAOAbstracter interface {
 	GetBlocks(n int) (*[]Block, error)
 	GetBlocksByID(id int64) (*Block, error)

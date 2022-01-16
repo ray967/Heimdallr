@@ -18,7 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	repo := repository.RepositoryService{}
+	repo := repository.Service{}
 	err = repo.Init()
 	if err != nil {
 		panic(fmt.Sprintf("Init repo failed:%v\n", err))

@@ -133,7 +133,7 @@ func sameBlock(a, b *model.Block) bool {
 }
 
 func Test_LatestBlocks(t *testing.T) {
-	repo := repository.RepositoryService{DAO: &mockDAO{}}
+	repo := repository.Service{DAO: &mockDAO{}}
 
 	testCases := []struct {
 		Name           string
@@ -222,7 +222,7 @@ func Test_LatestBlocks(t *testing.T) {
 }
 
 func Test_BlockByBlockID(t *testing.T) {
-	repo := repository.RepositoryService{DAO: &mockDAO{}}
+	repo := repository.Service{DAO: &mockDAO{}}
 
 	testCases := []struct {
 		Name           string
@@ -311,7 +311,7 @@ func Test_BlockByBlockID(t *testing.T) {
 }
 
 func Test_TransactionByTxHash(t *testing.T) {
-	repo := repository.RepositoryService{DAO: &mockDAO{}}
+	repo := repository.Service{DAO: &mockDAO{}}
 
 	testCases := []struct {
 		Name           string

@@ -25,7 +25,7 @@ var blockByNumber = func(client *ethclient.Client, headerNumber *big.Int) (*type
 }
 
 // GetNewBlocks insert pending blocks into channel
-func GetNewBlocks(client *ethclient.Client, repo repository.RepositoryService, ch chan *types.Block) {
+func GetNewBlocks(client *ethclient.Client, repo repository.Service, ch chan *types.Block) {
 
 	header, err := headerByNumber(client)
 	if err != nil {

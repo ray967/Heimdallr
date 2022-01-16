@@ -3,9 +3,11 @@ package service
 import (
 	"context"
 	"fmt"
+	"heimdallr/conf"
 	"heimdallr/model"
 	"heimdallr/model/repository"
 	"sync"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -21,7 +23,7 @@ var transactionReceipt = func(client *ethclient.Client, hash common.Hash) (*type
 }
 
 // GetTransactions gets the transactions when it's done
-func GetTransactions(client *ethclient.Client, repo repository.RepositoryService, ch chan *types.Block) {
+func GetTransactions(client *ethclient.Client, repo repository.Service, ch chan *types.Block) {
 	for len(ch) > 0 {
 		select {
 		case block, ok := <-ch:
@@ -43,7 +45,7 @@ func GetTransactions(client *ethclient.Client, repo repository.RepositoryService
 	}
 }
 
-func getTransaction(client *ethclient.Client, repo repository.RepositoryService, hash common.Hash, wg *sync.WaitGroup) {
+func getTransaction(client *ethclient.Client, repo repository.Service, hash common.Hash, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	var (
@@ -62,6 +64,7 @@ func getTransaction(client *ethclient.Client, repo repository.RepositoryService,
 		if isPending {
 			// if it's still pending then retry
 			// TODO hadle never be done
+			time.Sleep(conf.TransactionPendingTimeInterval)
 			continue
 		} else {
 			to := common.Hash{}
@@ -100,7 +103,7 @@ func getTransaction(client *ethclient.Client, repo repository.RepositoryService,
 	}
 }
 
-func updateBlockDone(repo repository.RepositoryService, blockID int64) {
+func updateBlockDone(repo repository.Service, blockID int64) {
 	err := repo.DAO.UpdateBlockDone(blockID)
 	if err != nil {
 		panic(fmt.Sprintf("UpdateBlockDone failed, block_num: %d", blockID))

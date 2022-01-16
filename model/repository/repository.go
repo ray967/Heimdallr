@@ -10,12 +10,14 @@ import (
 	"gorm.io/gorm"
 )
 
-type RepositoryService struct {
+// Service represents the db service
+type Service struct {
 	DAO model.DAOAbstracter
 	// TODO cache
 }
 
-func (svc *RepositoryService) Init() error {
+// Init the database connection
+func (svc *Service) Init() error {
 	db, err := newDatabaseConnection()
 	if err != nil {
 		return err

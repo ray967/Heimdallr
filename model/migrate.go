@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Migrate calls db.AutoMigrate
 func Migrate(ctx context.Context, db *gorm.DB) error {
 	models := []interface{}{
 		Block{},

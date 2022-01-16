@@ -71,17 +71,29 @@ Heimdallr is an Ethereum blockchain service based on PostgreSQL and Binance Chai
 - [x] Ethereum block indexer service
   - [x] Test
 - Bonus
-  - [ ] 掃的速度以及量會直接影響到記憶體使用,如何在有限度的記憶體下,做可量化的設計
+  - [x] 掃的速度以及量會直接影響到記憶體使用,如何在有限度的記憶體下,做可量化的設計
+    - limited channel
   - [ ] 可使用你所知的額外服務加強存取效能
+    - Redis, Kafka
   - [x] 區塊鏈有常見的分叉現象,意味著在當下最新區塊的前 n 塊都處於不穩定狀態,假設 n = 20,如何做到可以掃到最新塊又可以隨後將不穩定區塊替換成穩替區塊,且 API 回傳會註明是否是穩定區塊
-  - [ ] 如何最小限度的使用 RPC,達到需求
+    - update block to be done after all transactions were done
+  - [x] 如何最小限度的使用 RPC,達到需求
+    - HeaderByNumber: Once per the IndexerTimeInterval user setted
+    - BlockByNumber: Once per block
+    - TransactionByHash
+      - When the transaction is stable: Once per transaction
+      - When the transaction is pending: Once per the TransactionPendingTimeInterval user setted
+    - TransactionReceipt: Once per transaction
 - [ ] Logs
+- [ ] Use viper to fetch env
+- [ ] Write a logic to tunning IndexerTimeInterval and TransactionPendingTimeInterval
 
 ## Refs
 - lib & framework
-  - gorm 
-  - gin 
-  - go-ethereum, ethclient 
+	- github.com/ethereum/go-ethereum v1.10.14
+	- github.com/gin-gonic/gin v1.7.7
+	- gorm.io/driver/mysql v1.2.2
+	- gorm.io/gorm v1.22.4
 - web3 API
   - https://eth.wiki/json-rpc/API 
   - https://eth.wiki/json-rpc/API#eth_getblockbynumber 

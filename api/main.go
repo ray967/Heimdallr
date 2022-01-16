@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var repo repository.RepositoryService
+var repo repository.Service
 
 func latestBlocks(c *gin.Context) {
 	blocks, err := utils.LatestBlocks(repo, c.Query("limit"))

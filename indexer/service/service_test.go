@@ -47,7 +47,7 @@ func (*mockTrieHasher) Update([]byte, []byte) {}
 func (*mockTrieHasher) Hash() common.Hash     { return common.Hash{} }
 
 func Test_GetNewBlocks(t *testing.T) {
-	repo := repository.RepositoryService{DAO: &mockDAO{}}
+	repo := repository.Service{DAO: &mockDAO{}}
 
 	testCases := []struct {
 		Name           string
@@ -104,7 +104,7 @@ func mockChannel(blocks []*types.Block) chan *types.Block {
 	return ch
 }
 func Test_GetTransactions(t *testing.T) {
-	repo := repository.RepositoryService{DAO: &mockDAO{}}
+	repo := repository.Service{DAO: &mockDAO{}}
 
 	testCases := []struct {
 		Name               string

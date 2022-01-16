@@ -7,7 +7,7 @@ import (
 )
 
 // LatestBlocks get the latest limit blocks
-func LatestBlocks(repo repository.RepositoryService, limit string) (*[]model.Block, error) {
+func LatestBlocks(repo repository.Service, limit string) (*[]model.Block, error) {
 	n, err := strconv.Atoi(limit)
 	if err != nil {
 		return nil, err
@@ -22,7 +22,7 @@ func LatestBlocks(repo repository.RepositoryService, limit string) (*[]model.Blo
 }
 
 // BlockByBlockID get the block by block id
-func BlockByBlockID(repo repository.RepositoryService, blockID string) (*model.Block, error) {
+func BlockByBlockID(repo repository.Service, blockID string) (*model.Block, error) {
 	id, err := strconv.ParseInt(blockID, 10, 64)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func BlockByBlockID(repo repository.RepositoryService, blockID string) (*model.B
 }
 
 // TransactionByTxHash get the transaction by hash
-func TransactionByTxHash(repo repository.RepositoryService, hash string) (*model.Transaction, error) {
+func TransactionByTxHash(repo repository.Service, hash string) (*model.Transaction, error) {
 	txHash := []byte(hash)
 
 	tx, err := repo.DAO.GetTransactionByTxHash(txHash)
